@@ -3,7 +3,8 @@ from tkinter.ttk import Combobox
 
 
 LARGE_FONT= ("Verdana", 12)
-
+beans = int()
+currentPlayer = 1
 
 class menu(tk.Tk):
 
@@ -83,9 +84,12 @@ class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="# Beans Remaining", font=LARGE_FONT)
-        label.pack(pady=20,padx=10)
-        label1 = tk.Label(self, text="Player1's Turn", font=LARGE_FONT)
+        beans = 23
+        label = tk.Label(self, text="Beans Remaining:", font=LARGE_FONT)
+        label.pack(pady=15,padx=10)
+        labelB = tk.Label(self, text=beans, font=LARGE_FONT)
+        labelB.pack(pady=10,padx=10)
+        label1 = tk.Label(self, text="Player" +str(currentPlayer)+"'s Turn", font=LARGE_FONT)
         label1.pack(pady=10,padx=10)
         label2 = tk.Label(self, text="How many beans will you take?")
         label2.pack(pady=10,padx=10)
@@ -103,7 +107,7 @@ class EndPage(tk.Frame):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self, text="Congratulations", font=LARGE_FONT)
         label.pack(pady=30,padx=10)
-        label1 = tk.Label(self, text="Player ", font=LARGE_FONT)
+        label1 = tk.Label(self, text=("Player "+str(currentPlayer)), font=LARGE_FONT)
         label1.pack(pady=20,padx=10)
         label2 = tk.Label(self, text="YOU WIN", font=LARGE_FONT)
         label2.pack(pady=20,padx=10)
