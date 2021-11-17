@@ -1,7 +1,9 @@
 # BeanGame
+
 ## Árbol Minimax
 
-## Team:
+## Team
+
 - Andrés Martínez Cabrera
 - Carlos Manuel Vélez
 - Celia Lucía Castañeda Arizaga
