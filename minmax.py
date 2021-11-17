@@ -27,13 +27,25 @@ class mmTree:
     def calculateMinMax(self, node: mmNode = None):
         if not node:
             node = self.root
+
+        NodeR = None
+        NodeC = None
+        NodeL = None
+
+        if node.value > 2:
+            nodeR = mmNode(self.keyI+3, node.value-3, node)
+        if node.value > 1:
+            nodeC = mmNode(self.keyI+2, node.value-2, node)
         nodeL = mmNode(self.keyI+1, node.value-1, node)
-        nodeC = mmNode(self.keyI+2, node.value-2, node)
-        nodeR = mmNode(self.keyI+3, node.value-3, node)
         self.keyI += 3
         self.addNode(nodeL, node)
-        self.addNode(nodeC, node)
-        self.addNode(nodeR, node)
-        self.calculateMinMax(nodeL)
-        self.calculateMinMax(nodeC)
-        self.calculateMinMax(nodeR)
+        if NodeC:
+            self.addNode(nodeC, node)
+        if NodeR:
+            self.addNode(nodeR, node)
+        if NodeL > 0:
+            self.calculateMinMax(nodeL)
+        if NodeC and NodeC.value > 0:
+            self.calculateMinMax(nodeC)
+        if NodeR and NodeR.value > 0:
+            self.calculateMinMax(nodeR)
