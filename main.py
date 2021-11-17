@@ -72,7 +72,7 @@ class PageOne(tk.Frame):
         data=(1,2,3,4,5,6,7,8,9,10)
         cb1 = Combobox(self, values=data)
         slider = tk.Scale(self, from_=1, to=10, orient=HORIZONTAL, tickinterval=1)
-        slider.pack(padx=10, pady=10)
+        slider.pack(padx=10, pady=5)
         cb1.pack(pady=10,padx=10)
         label2 = tk.Label(self, text="Player 2 CPU Difficulty")
         label2.pack(pady=10,padx=10)
