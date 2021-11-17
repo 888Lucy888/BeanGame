@@ -19,7 +19,7 @@ class menu(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, PageOne, PageTwo):
+        for F in (StartPage, PageOne, PageTwo, EndPage):
 
             frame = F(container, self)
 
@@ -92,10 +92,24 @@ class PageTwo(tk.Frame):
         data=(1,2,3)
         cb = Combobox(self, values=data)
         cb.pack(pady=10,padx=10)
-        button2 = tk.Button(self, text="Continue",
+        button2 = tk.Button(self, text="Continue",  #IF NO BEANS SHOW EndPage
                             command=lambda: controller.show_frame(PageTwo))
         button2.pack(pady=20,padx=10)
         
+
+class EndPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent)
+        label = tk.Label(self, text="Congratulations", font=LARGE_FONT)
+        label.pack(pady=30,padx=10)
+        label1 = tk.Label(self, text="Player ", font=LARGE_FONT)
+        label1.pack(pady=20,padx=10)
+        label2 = tk.Label(self, text="YOU WIN", font=LARGE_FONT)
+        label2.pack(pady=20,padx=10)
+        button = tk.Button(self, text="Play Again", font=LARGE_FONT,
+                            command=lambda: controller.show_frame(StartPage))
+        button.pack(pady=40,padx=10)
 
 
 app = menu()
