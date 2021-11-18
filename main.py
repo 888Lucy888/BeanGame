@@ -4,9 +4,6 @@ from tkinter.constants import HORIZONTAL, VERTICAL
 from tkinter.ttk import Combobox
 
 
-LARGE_FONT= ("Verdana", 12)
-
-
 class menu(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -41,9 +38,11 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self, text="Welcome to our Bean Game", font=LARGE_FONT)
+        label = ttk.Label(self, text="Welcome to our Bean Game")
+        label["font"] = "TkHeadingFont"
         label.pack(pady=40,padx=10)
-        label1 = tk.Label(self, text="Rules:", font=LARGE_FONT)
+        label1 = ttk.Label(self, text="Rules:")
+        label1["font"] = "TkHeadingFont"
         label1.pack(pady=5,padx=10)
         label2 = tk.Label(self, text="Each player will have a turn, in that turn")
         label2.pack(pady=5,padx=10)
@@ -51,8 +50,7 @@ class StartPage(tk.Frame):
         label3.pack(pady=5,padx=10)
         label4 = tk.Label(self, text="Whoever picks up the last bean loses.")
         label4.pack(pady=5,padx=10)
-        button = tk.Button(self, text="Start", font=LARGE_FONT,
-                            command=lambda: controller.show_frame(PageOne))
+        button = ttk.Button(self, text="Start", command=lambda: controller.show_frame(PageOne))
         button.pack(pady=40,padx=10)
 
 
@@ -64,7 +62,8 @@ class PageOne(tk.Frame):
         
         settingFrame = ttk.Frame(self)
 
-        label = ttk.Label(settingFrame, text="Settings", font=LARGE_FONT)
+        label = ttk.Label(settingFrame, text="Settings")
+        label["font"] = "TkHeadingFont"
         label0 = ttk.Label(settingFrame, text="Number of Starting Beans")
 
         label.grid(row=0, column=1)
@@ -98,9 +97,11 @@ class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="# Beans Remaining", font=LARGE_FONT)
+        label = ttk.Label(self, text="# Beans Remaining")
+        label["font"] = "TkHeadingFont"
         label.pack(pady=20,padx=10)
-        label1 = tk.Label(self, text="Player1's Turn", font=LARGE_FONT)
+        label1 = ttk.Label(self, text="Player1's Turn")
+        label1["font"] = "TkHeadingFont"
         label1.pack(pady=10,padx=10)
         label2 = tk.Label(self, text="How many beans will you take?")
         label2.pack(pady=10,padx=10)
@@ -133,14 +134,16 @@ class EndPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self, text="Congratulations", font=LARGE_FONT)
+        label = ttk.Label(self, text="Congratulations")
+        label["font"] = "TkHeadingFont"
         label.pack(pady=30,padx=10)
-        label1 = tk.Label(self, text="Player ", font=LARGE_FONT)
+        label1 = ttk.Label(self, text="Player ")
+        label["font"] = "TkHeadingFont"
         label1.pack(pady=20,padx=10)
-        label2 = tk.Label(self, text="YOU WIN", font=LARGE_FONT)
+        label2 = ttk.Label(self, text="YOU WIN")
+        label2["font"] = "TkHeadingFont"
         label2.pack(pady=20,padx=10)
-        button = tk.Button(self, text="Play Again", font=LARGE_FONT,
-                            command=lambda: controller.show_frame(StartPage))
+        button = tk.Button(self, text="Play Again", command=lambda: controller.show_frame(StartPage))
         button.pack(pady=40,padx=10)
 
 
