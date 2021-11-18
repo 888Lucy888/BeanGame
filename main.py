@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.constants import HORIZONTAL
+from tkinter.constants import HORIZONTAL, VERTICAL
 from tkinter.ttk import Combobox
 
 
@@ -62,23 +62,36 @@ class PageOne(tk.Frame):
 
         tk.Frame.__init__(self, parent)
         
-        label = tk.Label(self, text="Settings", font=LARGE_FONT)
-        label.pack(pady=10,padx=10)
-        label0 = tk.Label(self, text="Number of Starting Beans")
-        label0.pack(pady=10,padx=10)
-        sliderBeans = tk.Scale(self, from_=21, to=25, orient=HORIZONTAL, tickinterval=1)
-        sliderBeans.pack(padx=10, pady=10)
-        label1 = tk.Label(self, text="Player 1 CPU Difficulty")
-        label1.pack(pady=10,padx=10)
-        slider = tk.Scale(self, from_=1, to=10, orient=HORIZONTAL, tickinterval=1)
-        slider.pack(padx=10, pady=10)
-        label2 = tk.Label(self, text="Player 2 CPU Difficulty")
-        label2.pack(pady=10,padx=10)
-        sliderPlayer2 = tk.Scale(self, from_=1, to=10, orient=HORIZONTAL, tickinterval=1)
-        sliderPlayer2.pack(padx=10, pady=10)
-        button1 = tk.Button(self, text="Continue",
+        settingFrame = ttk.Frame(self)
+
+        label = ttk.Label(settingFrame, text="Settings", font=LARGE_FONT)
+        label0 = ttk.Label(settingFrame, text="Number of Starting Beans")
+
+        label.grid(row=0, column=1)
+        label0.grid(row=1, column=1)
+
+        sliderBeans = ttk.Scale(settingFrame, from_=21, to=25, orient=HORIZONTAL)
+
+        sliderBeans.grid(row=2, column=1)
+
+        label1 = ttk.Label(settingFrame, text="Player 1 CPU Difficulty")
+        label2 = ttk.Label(settingFrame, text="Player 2 CPU Difficulty")
+        sliderPlayer1 = ttk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL)
+        sliderPlayer2 = ttk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL)
+
+        label1.grid(row=0, column=0)
+        label2.grid(row=0, column=2)
+
+        sliderPlayer1.grid(row=1, column=0)
+        sliderPlayer2.grid(row=1, column=2)
+
+
+        button1 = ttk.Button(settingFrame, text="Continue",
                             command=lambda: controller.show_frame(PageTwo))
-        button1.pack(pady=10,padx=10)
+
+        button1.grid(row=3, column=1)
+
+        settingFrame.pack(padx=10, pady=10)
 
 
 class PageTwo(tk.Frame):
