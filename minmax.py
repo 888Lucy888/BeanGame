@@ -69,3 +69,6 @@ class mmTree:
                 node.blue = False
             else:
                 node.blue = True
+
+        # TODO we can add a priority function that counts blues and reds of each subtree
+        # To give each branch a given priority
