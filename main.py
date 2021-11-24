@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.constants import HORIZONTAL, VERTICAL
 from tkinter.ttk import Combobox
+from minmax.py import *
 
+totalBeans = int()
 
 class menu(tk.Tk):
 
@@ -111,10 +113,12 @@ class PageTwo(tk.Frame):
         button1Bean = ttk.Button(buttonFrame, text="1")
         button2Bean = ttk.Button(buttonFrame, text="2")
         button3Bean = ttk.Button(buttonFrame, text="3")
-
-        button1Bean.state(['disabled'])
-        button2Bean.state(['disabled'])
-        button3Bean.state(['disabled'])
+        if totalBeans<3:     
+            button3Bean.state(['disabled'])
+        if totalBeans<2:
+            button2Bean.state(['disabled'])
+        if totalBeans<1:
+            button1Bean.state(['disabled'])
 
         button1Bean.grid(row=0, column=0)
         button2Bean.grid(row=0, column=1)
