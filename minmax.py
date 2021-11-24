@@ -6,69 +6,126 @@ class mmNode:
 
 @dataclass
 class mmNode:
-    key: int
     value: int
     parent: mmNode = None
     children: list = None
     blue: bool = False #Blue = Player 1 victory -- Red = Player 2 victory
+    blues: int = 0
+    reds: int = 0
 
 class mmTree:
     
     def __init__(self, root: mmNode):
         self.root = root
-        self.keyI = root.key
+
+        self.calculateMinMax()
+        self.redPriority()
+        self.bluePriority()
+
+        print(self.root.blues)
+        print(self.root.reds)
+
 
     def addNode(self, node: mmNode, parentNode: mmNode = None) -> None:
         if not parentNode:
             parentNode = self.root
-        if len(parentNode.children) < 3:
-            parentNode.children.append(node)
+        if not parentNode.children:
+            parentNode.children = []
+        parentNode.children.append(node)
 
     def depth(self, node):
         count = 0
         while node != self.root:
             count += 1
-            node = node.father
+            node = node.parent
         return count - 1
 
     def calculateMinMax(self, node: mmNode = None):
         if not node:
             node = self.root
 
+        print(node.value)
+
         NodeR = None
         NodeC = None
         NodeL = None
 
+        if node.value > 3:
+            NodeR = mmNode(node.value-3, node)
         if node.value > 2:
-            nodeR = mmNode(self.keyI+3, node.value-3, node)
-        if node.value > 1:
-            nodeC = mmNode(self.keyI+2, node.value-2, node)
-        nodeL = mmNode(self.keyI+1, node.value-1, node)
-        self.keyI += 3
-        self.addNode(nodeL, node)
-        if NodeC:
-            self.addNode(nodeC, node)
-        if NodeR:
-            self.addNode(nodeR, node)
+            NodeC = mmNode(node.value-2, node)
+        NodeL = mmNode(node.value-1, node)
         if NodeL.value > 0:
-            self.calculateMinMax(nodeL)
+            self.addNode(NodeL, node)
+        if NodeC:
+            self.addNode(NodeC, node)
+        if NodeR:
+            self.addNode(NodeR, node)
+        if NodeL.value > 0:
+            self.calculateMinMax(NodeL)
         if NodeC and NodeC.value > 0:
-            self.calculateMinMax(nodeC)
+            self.calculateMinMax(NodeC)
         if NodeR and NodeR.value > 0:
-            self.calculateMinMax(nodeR)
+            self.calculateMinMax(NodeR)
 
-        if node.value == 0:
+        if node.value == 1:
             depth = self.depth(node)
             # Player 1 will have even depth
             # For example... first turn beans equal to node on height 0
             # This means player 2 will have the odd depths
-            if depth % 2 != 0:
-                # This means player 2 has no beans to grab, which means
-                # Player 1 grabbed the last one, victory for Player 2
+            if depth % 2 == 0:
+                # This means player 1 has to grab the last one, which means
+                # victory for Player 2
                 # Long live PLayer 2
-                node.blue = False
+                self.convertRed(node)
             else:
-                node.blue = True
+                self.convertBlue(node)
 
-        # TODO we can add a priority function that counts blues and reds of each subtree
-        # To give each branch a given priority
+    # TODO we can add a priority function that counts blues and reds of each subtree
+    # To give each branch a given priority
+
+    def convertBlue(self, node: mmNode):
+        while True:
+            node.blue = True
+            node = node.parent
+            if node == self.root: break
+
+    def convertRed(self, node: mmNode):
+        while True:
+            node.blue = False
+            node = node.parent
+            if node == self.root: break
+
+    def redPriority(self, node:mmNode = None):
+        if not node:
+            node = self.root
+
+        priority = 0
+
+        if not node.blue: priority += 1
+
+        if node.children: 
+            for nodes in node.children:
+                priority += self.redPriority(nodes)
+
+        node.reds = priority
+
+        return priority
+
+    def bluePriority(self, node:mmNode = None):
+        if not node:
+            node = self.root
+
+        priority = 0
+
+        if node.blue: priority += 1
+
+        if node.children:
+            for nodes in node.children:
+                priority += self.bluePriority(nodes)
+
+        node.blues = priority
+
+        return priority
+
+mmTree(mmNode(4))
