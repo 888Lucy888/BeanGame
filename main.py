@@ -27,10 +27,6 @@ class mmTree:
         self.redPriority()
         self.bluePriority()
 
-        print("UWU")
-        print(self.root.blues)
-        print(self.root.reds)
-
 
     def addNode(self, node: mmNode, parentNode: mmNode = None) -> None:
         if not parentNode:
@@ -49,9 +45,6 @@ class mmTree:
     def calculateMinMax(self, node: mmNode = None):
         if not node:
             node = self.root
-
-        print("AAAA")
-        print(node.value)
 
         NodeR = None
         NodeC = None
@@ -139,10 +132,12 @@ class mmTree:
 
 dificultad= 0
 turno= False
-totalBeans = 5
+totalBeans = 21
 cpu1 = int()
 cpu2 = int()
 actualNodo = None
+turn = 1
+arbol = None
 
 class menu(tk.Tk):
 
@@ -173,22 +168,57 @@ class menu(tk.Tk):
         frame.tkraise()
 
     def set_settings(self, cont, beans, p1Dif, p2Dif):
+        global totalBeans, cpu1, cpu2, totalBeans, arbol, actualNodo
         frame = self.frames[cont]
         frame.tkraise()
-        global totalBeans
         totalBeans = beans
-        global cpu1
         cpu1 = p1Dif
-        global cpu2
         cpu2 = p2Dif
         arbol= mmTree(mmNode(totalBeans))
-        global actualNodo
         actualNodo= arbol.root
 
-    def pick_beans(self, button, number):
-        global totalBeans
+    def pick_beans(self, button, number, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+        global totalBeans, turn , turno
         if totalBeans-1<number:
             button.state(["disabled"])
+        totalBeans = totalBeans - number
+        turno = not turno
+        if turn == 1: turn = 2
+        if turn == 2: turn = 1
+
+    
+    def cpu(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+        global cpu1, cpu2, totalBeans, actualNodo
+        if turno:
+            dificultad= cpu2
+        else:
+            dificultad= cpu1
+        probabilidad= randint(1,10)
+        if totalBeans == 1:
+            camino = 1
+        elif probabilidad > dificultad:
+            print("Eligio mal")
+        if actualNodo.children[0].blue != turno:
+            print("Toma camino incorrecto")
+            camino= 1
+            actualNodo= actualNodo.children[0]
+        elif actualNodo.children[1] and actualNodo.children[1].blue != turno:
+            print("Toma camino incorrecto")
+            camino= 2
+            actualNodo= actualNodo.children[1]
+        elif actualNodo.children[2] and actualNodo.children[2].blue != turno:
+            print("Toma camino incorrecto")
+            camino= 3
+            actualNodo= actualNodo.children[2]
+        else:
+            print("Toma camino correcto")
+            camino= 1
+            actualNodo= actualNodo.children[0]
+        
 
 
         
@@ -254,10 +284,10 @@ class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="# Beans Remaining")
+        label = ttk.Label(self, text=str(totalBeans)+" Beans Remaining")
         label["font"] = "TkHeadingFont"
         label.pack(pady=20,padx=10)
-        label1 = ttk.Label(self, text="Player1's Turn")
+        label1 = ttk.Label(self, text="Player"+str(turn)+"'s Turn")
         label1["font"] = "TkHeadingFont"
         label1.pack(pady=10,padx=10)
         label2 = tk.Label(self, text="How many beans will you take?")
@@ -265,9 +295,9 @@ class PageTwo(tk.Frame):
 
         buttonFrame = ttk.Frame(self)
 
-        button1Bean = ttk.Button(buttonFrame, text="1", command=lambda: controller.pick_beans(self, 1))
-        button2Bean = ttk.Button(buttonFrame, text="2", command=lambda: controller.pick_beans(self, 2))
-        button3Bean = ttk.Button(buttonFrame, text="3", command=lambda: controller.pick_beans(self, 3))
+        button1Bean = ttk.Button(buttonFrame, text="1", command=lambda: controller.pick_beans(self, 1, PageTwo))
+        button2Bean = ttk.Button(buttonFrame, text="2", command=lambda: controller.pick_beans(self, 2, PageTwo))
+        button3Bean = ttk.Button(buttonFrame, text="3", command=lambda: controller.pick_beans(self, 3, PageTwo))
 
 
         button1Bean.grid(row=0, column=0)
@@ -275,6 +305,10 @@ class PageTwo(tk.Frame):
         button3Bean.grid(row=0, column=2)
 
         buttonFrame.pack(pady=10, padx=10)
+
+        buttonCPU = ttk.Button(self, text="Let the CPU decide",
+                            command=lambda: controller.cpu(PageTwo))
+        buttonCPU.pack(pady=20,padx=10)
 
         #data=(1,2,3)
         #cb = Combobox(self, values=data)
