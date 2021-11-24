@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.constants import HORIZONTAL, VERTICAL
 from tkinter.ttk import Combobox
-from minmax.py import *
+from minmax import *
 
-totalBeans = int()
+totalBeans = 5
+cpu1 = int()
+cpu2 = int()
 
 class menu(tk.Tk):
 
@@ -35,6 +37,17 @@ class menu(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
+    def set_settings(self, cont, beans, p1Dif, p2Dif):
+        frame = self.frames[cont]
+        frame.tkraise()
+        global totalBeans
+        totalBeans = beans
+        global cpu1
+        cpu1 = p1Dif
+        global cpu2
+        cpu2 = p2Dif
+
+
         
 class StartPage(tk.Frame):
 
@@ -56,7 +69,7 @@ class StartPage(tk.Frame):
         button.pack(pady=40,padx=10)
 
 
-class PageOne(tk.Frame):
+class PageOne(tk.Frame):        
 
     def __init__(self, parent, controller):
 
@@ -71,14 +84,14 @@ class PageOne(tk.Frame):
         label.grid(row=0, column=1)
         label0.grid(row=1, column=1)
 
-        sliderBeans = ttk.Scale(settingFrame, from_=21, to=25, orient=HORIZONTAL)
+        sliderBeans = tk.Scale(settingFrame, from_=21, to=25, orient=HORIZONTAL, resolution=1)
 
         sliderBeans.grid(row=2, column=1)
 
         label1 = ttk.Label(settingFrame, text="Player 1 CPU Difficulty")
         label2 = ttk.Label(settingFrame, text="Player 2 CPU Difficulty")
-        sliderPlayer1 = ttk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL)
-        sliderPlayer2 = ttk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL)
+        sliderPlayer1 = tk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL, resolution=1)
+        sliderPlayer2 = tk.Scale(settingFrame, from_=1, to=10, orient=VERTICAL, resolution=1)
 
         label1.grid(row=0, column=0)
         label2.grid(row=0, column=2)
@@ -88,8 +101,7 @@ class PageOne(tk.Frame):
 
 
         button1 = ttk.Button(settingFrame, text="Continue",
-                            command=lambda: controller.show_frame(PageTwo))
-
+                            command=lambda: controller.set_settings(PageTwo, sliderBeans.get(), sliderPlayer1.get(), sliderPlayer2.get()))
         button1.grid(row=3, column=1)
 
         settingFrame.pack(padx=10, pady=10)
@@ -113,12 +125,20 @@ class PageTwo(tk.Frame):
         button1Bean = ttk.Button(buttonFrame, text="1")
         button2Bean = ttk.Button(buttonFrame, text="2")
         button3Bean = ttk.Button(buttonFrame, text="3")
+
+        global totalBeans
+        print(totalBeans)
         if totalBeans<3:     
             button3Bean.state(['disabled'])
         if totalBeans<2:
             button2Bean.state(['disabled'])
         if totalBeans<1:
             button1Bean.state(['disabled'])
+        if totalBeans>3:
+            button1Bean.state(['!disabled'])
+            button1Bean.state(['!disabled'])
+            button1Bean.state(['!disabled'])
+
 
         button1Bean.grid(row=0, column=0)
         button2Bean.grid(row=0, column=1)
@@ -132,7 +152,13 @@ class PageTwo(tk.Frame):
         button2 = ttk.Button(self, text="Continue",  #IF NO BEANS SHOW EndPage
                             command=lambda: controller.show_frame(PageTwo))
         button2.pack(pady=20,padx=10)
+
+        # if totalBeans == 0:
+        #     button2.state(["!disabled"])
+        # else:
+        #     button2.state(["disabled"])
         
+    
 
 class EndPage(tk.Frame):
 
