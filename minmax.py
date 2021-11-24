@@ -169,29 +169,21 @@ while True:
     if frijoles == 1:
       camino= 1
     elif probabilidad > dificultad:
-      if actualNodo.children[0].blue != turno:
-        camino= 1
-        actualNodo= actualNodo.children[0]
-      elif actualNodo.children[1] and actualNodo.children[1].blue != turno:
-        camino= 2
-        actualNodo= actualNodo.children[1]
-      elif actualNodo.children[2] and actualNodo.children[2].blue != turno:
-        camino= 3
-        actualNodo= actualNodo.children[2]
+      for i in range(len(actualNodo.children)):
+        if actualNodo.children[i].blue != turno:
+          camino= i+1
+          actualNodo= actualNodo.children[i]
+          break
       else:
         camino= 1
         actualNodo= actualNodo.children[0]
       
     else:
-      if actualNodo.children[0].blue == turno:
-        camino= 1
-        actualNodo= actualNodo.children[0]
-      elif actualNodo.children[1] and actualNodo.children[1].blue == turno:
-        camino= 2
-        actualNodo= actualNodo.children[1]
-      elif actualNodo.children[2] and actualNodo.children[2].blue == turno:
-        camino= 3
-        actualNodo= actualNodo.children[2]
+      for i in range(len(actualNodo.children)):
+        if actualNodo.children[i].blue == turno:
+            camino= i+1
+            actualNodo= actualNodo.children[i]
+            break
       else:
         camino= 1
         actualNodo= actualNodo.children[0]
