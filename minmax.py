@@ -151,7 +151,7 @@ while True:
       print("Gana jugador 1")
     break
 
-  print(frijoles)
+  print("Frijoles: " + str(frijoles))
 
   camino= 0
 
@@ -169,40 +169,30 @@ while True:
     if frijoles == 1:
       camino= 1
     elif probabilidad > dificultad:
-      print("Eligio mal")
       if actualNodo.children[0].blue != turno:
-        print("Toma camino incorrecto")
         camino= 1
         actualNodo= actualNodo.children[0]
       elif actualNodo.children[1] and actualNodo.children[1].blue != turno:
-        print("Toma camino incorrecto")
         camino= 2
         actualNodo= actualNodo.children[1]
       elif actualNodo.children[2] and actualNodo.children[2].blue != turno:
-        print("Toma camino incorrecto")
         camino= 3
         actualNodo= actualNodo.children[2]
       else:
-        print("Toma camino correcto")
         camino= 1
         actualNodo= actualNodo.children[0]
       
     else:
-      print("Eligio bien")
       if actualNodo.children[0].blue == turno:
-        print("Toma camino correcto" + str(actualNodo.children[1].blue) + str(actualNodo.children[1].value))
         camino= 1
         actualNodo= actualNodo.children[0]
       elif actualNodo.children[1] and actualNodo.children[1].blue == turno:
-        print("Toma camino correcto")
         camino= 2
         actualNodo= actualNodo.children[1]
       elif actualNodo.children[2] and actualNodo.children[2].blue == turno:
-        print("Toma camino correcto")
         camino= 3
         actualNodo= actualNodo.children[2]
       else:
-        print("Toma camino incorrecto")
         camino= 1
         actualNodo= actualNodo.children[0]
 
@@ -215,6 +205,8 @@ while True:
     else:
       print("Toma tu frijol")
     camino= input() #Decision del jugador
+
+  print("Tomó " + str(camino) + " frijoles")
 
   frijoles-= int(camino)
   #Intercambiar jugadores
