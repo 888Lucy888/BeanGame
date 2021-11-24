@@ -23,6 +23,7 @@ class mmTree:
         self.redPriority()
         self.bluePriority()
 
+        print("UWU")
         print(self.root.blues)
         print(self.root.reds)
 
@@ -45,31 +46,34 @@ class mmTree:
         if not node:
             node = self.root
 
+        print("AAAA")
         print(node.value)
 
         NodeR = None
         NodeC = None
         NodeL = None
 
-        if node.value > 2:
-            NodeR = mmNode(node.value-3, node)
-        if node.value > 1:
-            NodeC = mmNode(node.value-2, node)
-        NodeL = mmNode(node.value-1, node)
-        if NodeL.value > 0:
+        value = int(node.value)
+
+        if value > 2:
+            NodeR = mmNode(value-3, node)
+        if int(value) > 1:
+            NodeC = mmNode(value-2, node)
+        NodeL = mmNode(value-1, node)
+        if int(NodeL.value) > 0:
             self.addNode(NodeL, node)
         if NodeC:
             self.addNode(NodeC, node)
         if NodeR:
             self.addNode(NodeR, node)
-        if NodeL.value > 0:
+        if int(NodeL.value) > 0:
             self.calculateMinMax(NodeL)
-        if NodeC and NodeC.value > 0:
+        if NodeC and int(NodeC.value) > 0:
             self.calculateMinMax(NodeC)
-        if NodeR and NodeR.value > 0:
+        if NodeR and int(NodeR.value) > 0:
             self.calculateMinMax(NodeR)
 
-        if node.value == 1:
+        if value == 1:
             depth = self.depth(node)
             # Player 1 will have even depth
             # For example... first turn beans equal to node on height 0
@@ -131,28 +135,30 @@ class mmTree:
 
 dificultad= 0
 frijoles= 21 #a 25
-turno= True
+turno= False
 
 print("Elige el numero de frijoles")
-frijoles= input()
+frijoles= int(input())
 
 #Crear arbol
 arbol= mmTree(mmNode(frijoles))
 
 print("Jugador 1 ->  Dificultad del 1 al 10")
-dificultad1= input()
+dificultad1= int(input())
 print("Jugador 2 ->  Dificultad del 1 al 10")
-dificultad2= input()
+dificultad2= int(input())
 
 actualNodo= arbol.root #Nodo hijo de la raiz
 
 while True:
   if frijoles == 0:
     if turno:
-      print("Gana jugador 1")
-    else:
       print("Gana jugador 2")
+    else:
+      print("Gana jugador 1")
     break
+
+  print(frijoles)
 
   camino= 0
 
@@ -160,14 +166,17 @@ while True:
   auto= input()
 
   #Modo Maquina
-  if auto == 1:
+  if int(auto) == 1:
     if turno:
       dificultad= dificultad1
     else:
       dificultad= dificultad2
 
     probabilidad= randint(1,10)
-    if probabilidad > dificultad:
+    if frijoles == 1:
+      camino= 1
+    elif probabilidad > dificultad:
+      print("Eligio mal")
       if actualNodo.children[0].blue != turno:
         print("Toma camino incorrecto")
         camino= 1
@@ -186,8 +195,9 @@ while True:
         actualNodo= actualNodo.children[0]
       
     else:
+      print("Eligio bien")
       if actualNodo.children[0].blue == turno:
-        print("Toma camino correcto")
+        print("Toma camino correcto" + str(actualNodo.children[1].blue) + str(actualNodo.children[1].value))
         camino= 1
         actualNodo= actualNodo.children[0]
       elif actualNodo.children[1] and actualNodo.children[1].blue == turno:
@@ -205,15 +215,14 @@ while True:
 
   #Modo jugador
   else:
-    if len(actualNodo.children) == 3:
+    if frijoles >= 3:
       print("Escoge entre 1 y 3 frijolitos")
-    elif len(actualNodo.children) == 2:
+    elif frijoles >= 2:
       print("Escoge entre 1 y 2 frijolitos")
     else:
       print("Toma tu frijol")
     camino= input() #Decision del jugador
-    actualNodo= actualNodo.children[camino-1]
 
-  frijoles-= camino
+  frijoles-= int(camino)
   #Intercambiar jugadores
   turno = not turno
