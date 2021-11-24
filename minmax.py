@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from random import randint
 
 @dataclass
 class mmNode:
@@ -50,9 +51,9 @@ class mmTree:
         NodeC = None
         NodeL = None
 
-        if node.value > 3:
-            NodeR = mmNode(node.value-3, node)
         if node.value > 2:
+            NodeR = mmNode(node.value-3, node)
+        if node.value > 1:
             NodeC = mmNode(node.value-2, node)
         NodeL = mmNode(node.value-1, node)
         if NodeL.value > 0:
@@ -128,4 +129,91 @@ class mmTree:
 
         return priority
 
-mmTree(mmNode(4))
+dificultad= 0
+frijoles= 21 #a 25
+turno= True
+
+print("Elige el numero de frijoles")
+frijoles= input()
+
+#Crear arbol
+arbol= mmTree(mmNode(frijoles))
+
+print("Jugador 1 ->  Dificultad del 1 al 10")
+dificultad1= input()
+print("Jugador 2 ->  Dificultad del 1 al 10")
+dificultad2= input()
+
+actualNodo= arbol.root #Nodo hijo de la raiz
+
+while True:
+  if frijoles == 0:
+    if turno:
+      print("Gana jugador 1")
+    else:
+      print("Gana jugador 2")
+    break
+
+  camino= 0
+
+  print("Seleccione 1 si quiere que que la maquina escoja y 0 si usted quiere elegir")
+  auto= input()
+
+  #Modo Maquina
+  if auto == 1:
+    if turno:
+      dificultad= dificultad1
+    else:
+      dificultad= dificultad2
+
+    probabilidad= randint(1,10)
+    if probabilidad > dificultad:
+      if actualNodo.children[0].blue != turno:
+        print("Toma camino incorrecto")
+        camino= 1
+        actualNodo= actualNodo.children[0]
+      elif actualNodo.children[1] and actualNodo.children[1].blue != turno:
+        print("Toma camino incorrecto")
+        camino= 2
+        actualNodo= actualNodo.children[1]
+      elif actualNodo.children[2] and actualNodo.children[2].blue != turno:
+        print("Toma camino incorrecto")
+        camino= 3
+        actualNodo= actualNodo.children[2]
+      else:
+        print("Toma camino correcto")
+        camino= 1
+        actualNodo= actualNodo.children[0]
+      
+    else:
+      if actualNodo.children[0].blue == turno:
+        print("Toma camino correcto")
+        camino= 1
+        actualNodo= actualNodo.children[0]
+      elif actualNodo.children[1] and actualNodo.children[1].blue == turno:
+        print("Toma camino correcto")
+        camino= 2
+        actualNodo= actualNodo.children[1]
+      elif actualNodo.children[2] and actualNodo.children[2].blue == turno:
+        print("Toma camino correcto")
+        camino= 3
+        actualNodo= actualNodo.children[2]
+      else:
+        print("Toma camino incorrecto")
+        camino= 1
+        actualNodo= actualNodo.children[0]
+
+  #Modo jugador
+  else:
+    if len(actualNodo.children) == 3:
+      print("Escoge entre 1 y 3 frijolitos")
+    elif len(actualNodo.children) == 2:
+      print("Escoge entre 1 y 2 frijolitos")
+    else:
+      print("Toma tu frijol")
+    camino= input() #Decision del jugador
+    actualNodo= actualNodo.children[camino-1]
+
+  frijoles-= camino
+  #Intercambiar jugadores
+  turno = not turno
